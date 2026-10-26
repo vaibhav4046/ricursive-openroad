@@ -13,8 +13,8 @@ Evidence repository documenting the OpenROAD Flow Scripts (ORFS) reference flow 
 
 1. **Physical Design Reference:** Completed the official OpenROAD Flow Scripts RTL-to-GDS reference flow on `nangate45/gcd` under Docker with zero DRC and zero antenna violations.
 2. **Timing Analysis:** Setup WNS is $-0.163\text{ ns}$ (TNS $-6.995\text{ ns}$, 50 violating endpoints) at an aggressive $0.41\text{ ns}$ target period; Hold WNS is $+0.0896\text{ ns}$ (zero hold violations).
-3. **Area Terminology Correction:** Core area is $1,076.77\ \mu\text{m}^2$; active standard cell area is $906.53\ \mu\text{m}^2$ ($84.19\%$ core utilization across 720 active standard cells); physical fill/tap cells total 326 ($182.48\ \mu\text{m}^2$), summing to 1,000 placed instances.
-4. **Arithmetic Dynamic Verification:** The custom signed-INT8 prefill MAC tile (`rtl/prefill_mac_tile.sv`) passed 3,009 dynamic verification vectors in Icarus Verilog (`iverilog`), covering saturation/overflow, reset recovery, and 3,000 pseudorandom transaction cycles.
+3. **Area and count audit:** The reported cell taxonomy sums to 674 functional cells plus 326 fill/tap cells, exactly 1,000 instances. Functional area from the named categories is 894.29 square microns; the previously labelled 906.53 square microns includes 12.24 square microns of tap cells. Exact geometric core bounds and utilization definitions require native DEF/report verification.
+4. **Arithmetic Dynamic Verification:** The custom signed-INT8 prefill MAC tile (`rtl/prefill_mac_tile.sv`) passed 3,009 dynamic verification vectors in Icarus Verilog (`iverilog`), covering overflow and modulo wraparound, reset recovery, and 3,000 pseudorandom transaction cycles.
 5. **Formal Verification Honesty:** YosysHQ EQY formal equivalence is explicitly marked **NOT RUN** due to tool unavailability in the execution environment; physical design PPA comparisons on modified MAC RTL are strictly withheld pending formal proof closure.
 
 ---
@@ -25,23 +25,23 @@ Extracted directly from OpenROAD stage 6 reports (`artifacts/logs/6_report.json`
 
 | Metric Category | Parameter | Value | Notes |
 |---|---|---|---|
-| **Area** | Die Area | $1,278.42\ \mu\text{m}^2$ | Full boundary ($38.00\ \mu\text{m} \times 33.64\ \mu\text{m}$) |
-| | Core Area | $1,076.77\ \mu\text{m}^2$ | Standard cell row boundary ($35.00\ \mu\text{m} \times 30.76\ \mu\text{m}$) |
-| | Active Standard Cell Area | $906.53\ \mu\text{m}^2$ | Occupied by 720 active logic cells |
+| **Area** | Die Area (reported) | 1,278.42 um² | Verify native DEF boundary; the rounded dimensions shown earlier do not exactly reproduce the figure. |
+| | Core Area | approximately 1,077 um² | Exact geometric bounds require native DEF/ODB inspection. Do not equate sum of instance areas with footprint. |
+| | Functional Cell Area (category sum) | 894.29 um² | 674 functional instances; excludes 280 filler and 46 tap instances. |
 | | Physical Support Cell Area | $182.48\ \mu\text{m}^2$ | 280 Fill cells ($170.24\ \mu\text{m}^2$) + 46 Tap cells ($12.24\ \mu\text{m}^2$) |
-| | Core Utilization | **84.19%** | Active Cell Area / Core Area ($906.528 / 1076.77$) |
+| | Reported Utilization | approximately 84% | Earlier 84.19% calculation treated 12.24 um² of tap cells as active logic; verify native tool definition. |
 | **Instance Count** | Total Placed Instances | **1,000** | Active standard cells (720) + Physical cells (326) |
 | | Sequential Logic | 35 | D-type flip-flops ($158.27\ \mu\text{m}^2$) |
 | | Combinational Logic | 377 | Multi-input gates ($512.32\ \mu\text{m}^2$) |
-| | Inverters & Buffers | 254 | CTS buffers (6), CTS inv (2), Resizer buffers (167), Resizer inv (1), Inverters (86) |
+| | Inverters & Buffers | 262 | CTS buffers (6), CTS inv (2), Resizer buffers (167), Resizer inv (1), Inverters (86) |
 | **Timing** | Clock Target Period | $0.41\text{ ns}$ | $2.439\text{ GHz}$ target in `constraint.sdc` |
-| | Achieved $F_{\max}$ | $2.41884\text{ GHz}$ | Minimum clock period: $0.4134\text{ ns}$ |
+| | Separately Reported Fmax | 2.41884 GHz | **Not timing closure**: setup WNS is negative; reconcile clock/path scope before quoting an achieved frequency. |
 | | Setup WNS / TNS | **$-0.163\text{ ns}$ / $-6.995\text{ ns}$** | 50 violating endpoints (unpipelined 45nm datapath) |
 | | Hold WNS / TNS | **$+0.0896\text{ ns}$ / $0.000\text{ ns}$** | **PASS** — Zero hold violations |
 | | Clock Skew | $1.05\text{ ps}$ | Balanced clock distribution via TritonCTS |
 | **Power & IR Drop** | Total Power | $6.02\text{ mW}$ | Internal: $3.30\text{ mW}$, Switching: $2.70\text{ mW}$, Leakage: $0.024\text{ mW}$ |
-| | VDD Max IR Drop | $1.05\%$ ($1.15\times 10^{-2}\text{ V}$) | Well within standard limits |
-| | VSS Max IR Drop | $0.62\%$ ($6.83\times 10^{-3}\text{ V}$) | Ground bounce within limits |
+| | VDD Max IR Drop | $1.05\%$ ($1.15\times 10^{-2}\text{ V}$) | Flow estimate, not foundry signoff |
+| | VSS Max IR Drop | $0.62\%$ ($6.83\times 10^{-3}\text{ V}$) | Flow estimate, not foundry signoff |
 | **Integrity** | Detailed Route DRCs | **0 violations** | Verified via `5_route_drc.rpt` (0 bytes) |
 | | Antenna Violations | **0 violations** | Verified via `drt_antennas.log` (0 bytes) |
 
@@ -87,7 +87,7 @@ DYNAMIC_EQUIVALENCE_PASS vectors=3009 (formal proof still required)
 
 ## 5. Evidence Manifest & Checksums
 
-The physical design artifacts are archived in `Ricursive_GCD_Real_Artifacts.tar.gz`:
+The evidence archive was reportedly generated locally, but **its raw GDS and logs are not published in this repository**. A public hash list does not independently authenticate unavailable bytes. Original archive:
 - **Archive Size:** `1,547,429 bytes`
 - **Archive SHA-256:** `AAE30B530E3CF1F35ED90DE4AF1530244B53E08A4F20AC9205C8B89FC017E7D0`
 
@@ -115,3 +115,8 @@ python -m unittest discover -s tests -v
 ## 6. PDK & IP Licensing Statement
 
 All physical design flows utilize the open-source FreePDK45 / Nangate45 Open Cell Library from the public OpenROAD-flow-scripts project. This repository contains zero proprietary foundry intellectual property, zero closed PDK standard cell libraries, and zero commercial cell models.
+
+
+### Documentation audit disclosure
+
+The original raw build archive was not available to this GitHub documentation audit. The counts and area figures above are internally recalculated from the publicly listed cell categories, not from a new physical-design run. The historical evidence/metrics.json file has not yet been reconciled to these corrections. See [independent review findings](docs/REVIEW_FINDINGS.md).
