@@ -22,7 +22,7 @@ In standard physical design (ISPD / OpenROAD) terminology:
 
 The OpenROAD database records **1,000 total placed instances**. This count comprises:
 
-**Functional Standard Cells (674 cells, 894.29 square microns from published categories):**
+1. **Functional Standard Cells (674 cells, 894.29 square microns from published categories):**
    - **Sequential Logic:** 35 cells ($158.27\ \mu\text{m}^2$) — D-type flip-flops.
    - **Combinational Logic:** 377 cells ($512.32\ \mu\text{m}^2$) — NAND, NOR, XOR, multiplexers.
    - **Inverters:** 86 cells ($61.18\ \mu\text{m}^2$).
