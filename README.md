@@ -30,7 +30,7 @@ Extracted directly from OpenROAD stage 6 reports (`artifacts/logs/6_report.json`
 | | Functional Cell Area (category sum) | 894.29 um² | 674 functional instances; excludes 280 filler and 46 tap instances. |
 | | Physical Support Cell Area | $182.48\ \mu\text{m}^2$ | 280 Fill cells ($170.24\ \mu\text{m}^2$) + 46 Tap cells ($12.24\ \mu\text{m}^2$) |
 | | Reported Utilization | approximately 84% | Earlier 84.19% calculation treated 12.24 um² of tap cells as active logic; verify native tool definition. |
-| **Instance Count** | Total Placed Instances | **1,000** | Active standard cells (720) + Physical cells (326) |
+| **Instance Count** | Total Placed Instances | **1,000** | Functional cells (674) + fill/tap cells (326) |
 | | Sequential Logic | 35 | D-type flip-flops ($158.27\ \mu\text{m}^2$) |
 | | Combinational Logic | 377 | Multi-input gates ($512.32\ \mu\text{m}^2$) |
 | | Inverters & Buffers | 262 | CTS buffers (6), CTS inv (2), Resizer buffers (167), Resizer inv (1), Inverters (86) |
