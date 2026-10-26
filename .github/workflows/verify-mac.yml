@@ -54,7 +54,9 @@ jobs:
         run: |
           set -euo pipefail
           eqy -f formal/prefill_mac.eqy 2>&1 | tee ci-artifacts/eqy-console.log
-          grep -qi 'PASS' ci-artifacts/eqy-console.log
+          test -f prefill_mac/PASS
+          test ! -f prefill_mac/FAIL
+          grep -q 'Successfully proved designs equivalent' ci-artifacts/eqy-console.log || grep -q 'PASS' prefill_mac/status
 
       - name: Preserve logs, including failed proof details
         if: always()
