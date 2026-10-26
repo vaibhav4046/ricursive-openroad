@@ -24,8 +24,7 @@ Extracted directly from OpenROAD stage 6 reports (`6_finish.rpt` and `6_report.j
 
 ## 2. Documented Engineering Assumptions & Limitations
 
-1. **Aggressive Clock Period:**
-2. **Hypothesis, not tested:** A looser clock such as 0.58 ns might resolve the reported setup failures, but timing must be rerun at that constraint before any positive slack is claimed.
+1. **Aggressive Clock Period:** The 0.41 ns constraint comes from the reported reference setup. A looser target such as 0.58 ns is only a hypothesis and must be rerun before claiming positive setup slack.
 
 2. **Virtual Clock Warning (`STA-0450`):**
    OpenSTA reported `[WARNING STA-0450] virtual clock vclk_core_clock can not be propagated`. The virtual clock is used to model input/output delay constraints at core boundaries; it is unpropagated by design and does not degrade internal core path analysis.
