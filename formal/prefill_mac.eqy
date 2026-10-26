@@ -1,0 +1,16 @@
+# Run from v2/ directory after installing eqy + Yosys + supported SMT engine.
+# Different module names are intentional: the same named ports are compared.
+[gold]
+read_verilog -sv rtl/prefill_mac_tile.sv
+prep -top prefill_mac_tile_gold
+
+[gate]
+read_verilog -sv rtl/prefill_mac_tile.sv
+prep -top prefill_mac_tile_gate
+
+[collect *]
+
+[strategy sby]
+use sby
+depth 20
+engine smtbmc z3

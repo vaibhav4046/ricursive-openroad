@@ -1,0 +1,23 @@
+# Output caches and simulations
+outputs/
+*.log
+*.vcd
+*.vpp
+*.sim
+target/
+build/
+*.odb
+*.gds
+*.def
+*.tar.gz
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.pytest_cache/
+
+# OS specific
+.DS_Store
+Thumbs.db

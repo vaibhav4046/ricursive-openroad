@@ -1,0 +1,42 @@
+{
+  "status": "REFERENCE_GDS_ARTIFACTS_PRESENT_NOT_SIGNOFF",
+  "artifact_checks_passed": true,
+  "design": "gcd",
+  "platform": "nangate45",
+  "source_commit": "64939f3717ad7c694199ba04cb98924b98022868",
+  "image_id": "sha256:6810dbf0e03dddbc89ed8c0a1e13cad09ce4c98d40c4ac0ab99fdc04b0676347",
+  "files_sha256": {
+    "artifacts/results/5_2_route.odb": "2f0d6495b87f969e4ab38dbb37c4fc5814dd856cd4183e1537343cf4fe7d1f13",
+    "artifacts/results/5_route.odb": "007c9d3e74e7fd67034a00d994779a1382985c3491143d31e1a9967c78fcf0b2",
+    "artifacts/results/6_final.gds": "133ed23dcbee31f5e950a4e65f7c73a3f69b84b02d01b6898d7c714ce860bff5",
+    "artifacts/results/6_final.def": "0cf53a1116e3aeaa4cf1f4f63309c415e9147949e2057e8c348d49dfb2454b74",
+    "artifacts/results/6_final.v": "326191b1dcb29edc1e3e9fb64028dcac39ebbdd94b85c7175b722635528ea7bc",
+    "artifacts/results/6_final.sdc": "112a077b756cada0fab67b2061733207a9cd7ac99b3e98454cabcad5aec7aa77",
+    "artifacts/logs/6_report.log": "3d14eeb98357a39c74f57d26cc40460f2c745308ceede0aa5168b02dc899054c",
+    "build.log": "1124de6a5259058c1b8ae4939dd97bfbc66cd408d8b27ed461a74adcf083a892",
+    "artifacts/inputs/config.mk": "406587c377793f649502d5afa92e8a8e49b74f60177e7ecf4195a3baa1c8f758",
+    "artifacts/inputs/gcd.v": "5009f224876d39e5e77e59ee1528cb0d2a03697251f0971b77cf3e8b0426dd3e",
+    "artifacts/inputs/constraint.sdc": "952a1a0a6de30877f585ee924004ce66151ff8325ec77e274fd92d1fdbf36582"
+  },
+  "files_bytes": {
+    "artifacts/results/5_2_route.odb": 1262457,
+    "artifacts/results/5_route.odb": 1328180,
+    "artifacts/results/6_final.gds": 582814,
+    "artifacts/results/6_final.def": 430404,
+    "artifacts/results/6_final.v": 53774,
+    "artifacts/results/6_final.sdc": 6137,
+    "artifacts/logs/6_report.log": 3827,
+    "build.log": 172635,
+    "artifacts/inputs/config.mk": 590,
+    "artifacts/inputs/gcd.v": 18788,
+    "artifacts/inputs/constraint.sdc": 604
+  },
+  "errors": [],
+  "explicit_nonclaims": [
+    "NOT formal equivalence",
+    "NOT DRC/LVS independently verified",
+    "NOT signoff or taped-out silicon",
+    "NOT a custom MAC or AI accelerator",
+    "NOT a PPA improvement claim"
+  ]
+}

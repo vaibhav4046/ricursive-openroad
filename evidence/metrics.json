@@ -1,0 +1,73 @@
+{
+  "design": "nangate45/gcd (base reference)",
+  "flow": "OpenROAD Flow Scripts (ORFS)",
+  "orfs_pinned_commit": "64939f3717ad7c694199ba04cb98924b98022868",
+  "docker_image_id": "sha256:6810dbf0e03dddbc89ed8c0a1e13cad09ce4c98d40c4ac0ab99fdc04b0676347",
+  "archive": {
+    "filename": "Ricursive_GCD_Real_Artifacts.tar.gz",
+    "size_bytes": 1547429,
+    "sha256": "AAE30B530E3CF1F35ED90DE4AF1530244B53E08A4F20AC9205C8B89FC017E7D0"
+  },
+  "area_metrics": {
+    "die_area_um2": 1278.42,
+    "core_area_um2": 1076.77,
+    "standard_cell_area_um2": 906.528,
+    "physical_cell_area_um2": 182.476,
+    "core_utilization_ratio": 0.841897,
+    "core_utilization_percent": 84.19
+  },
+  "instance_breakdown": {
+    "total_placed_instances": 1000,
+    "active_standard_cells": 720,
+    "physical_support_cells": 326,
+    "details": {
+      "sequential_cells": 35,
+      "multi_input_combinational_cells": 377,
+      "inverters": 86,
+      "timing_repair_buffers": 167,
+      "timing_repair_inverters": 1,
+      "clock_buffers": 6,
+      "clock_inverters": 2,
+      "fill_cells": 280,
+      "tap_cells": 46
+    }
+  },
+  "timing_metrics": {
+    "clock_period_target_ns": 0.41,
+    "clock_frequency_target_ghz": 2.42,
+    "fmax_achieved_ghz": 2.41884,
+    "setup_wns_ns": -0.163422,
+    "setup_tns_ns": -6.99464,
+    "setup_violating_endpoints": 50,
+    "hold_wns_ns": 0.0896008,
+    "hold_tns_ns": 0.0,
+    "hold_violating_endpoints": 0,
+    "setup_skew_ns": 0.00104741,
+    "hold_skew_ns": 0.00104741
+  },
+  "power_metrics_mw": {
+    "internal_power": 3.30,
+    "switching_power": 2.70,
+    "leakage_power": 0.024,
+    "total_power": 6.02
+  },
+  "power_grid_ir_drop": {
+    "vdd_nominal_v": 1.10,
+    "vdd_worst_voltage_v": 1.08848,
+    "vdd_worst_drop_v": 0.01152,
+    "vdd_percentage_drop": 1.05,
+    "vss_worst_voltage_v": 0.00683,
+    "vss_worst_drop_v": 0.00683,
+    "vss_percentage_drop": 0.62
+  },
+  "drc_and_antennas": {
+    "detailed_route_drc_violations": 0,
+    "antenna_violations": 0
+  },
+  "mac_verification": {
+    "dynamic_simulation_vectors": 3009,
+    "dynamic_simulation_status": "PASS",
+    "formal_equivalence_status": "NOT RUN (eqy unavailable in execution environment)",
+    "pdr_ppa_comparison_status": "NOT RUN (blocked on formal proof closure)"
+  }
+}
