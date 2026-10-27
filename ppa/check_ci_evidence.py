@@ -80,6 +80,22 @@ def check(root):
             errors.append(f"{variant}: no physical database/DEF (final stage not established)")
         if not any(p.is_file() and ("sta" in p.name.lower() or "tim" in p.name.lower()) for p in reports + logs):
             errors.append(f"{variant}: no timing-related report/log")
+        # File-presence gates for final-stage evidence. These are intentionally
+        # stricter than accepting an arbitrary route-named log or intermediate ODB.
+        # They still do NOT establish zero DRC, timing closure, or valid PPA.
+        for name in ("6_final.odb", "6_final.def", "6_final.sdc"):
+            candidate = base / "results" / name
+            if not candidate.is_file() or not candidate.stat().st_size:
+                errors.append(f"{variant}: missing or empty final physical artifact {name}")
+        drc = base / "reports" / "5_route_drc.rpt"
+        # An empty DRC report is legitimate (no detailed violations).
+        if not drc.is_file():
+            errors.append(f"{variant}: missing detailed-route DRC report 5_route_drc.rpt")
+        if not any((base / folder / name).is_file() and
+                   (base / folder / name).stat().st_size
+                   for folder, name in (("reports", "6_finish.rpt"),
+                                        ("logs", "6_report.log"))):
+            errors.append(f"{variant}: missing final timing/area/power reporting stage")
         verify_hashes(base, errors, variant)
     return errors
 
