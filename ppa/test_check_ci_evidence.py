@@ -32,6 +32,10 @@ class EvidenceTests(unittest.TestCase):
             write(base / "logs" / "5_route.log")
             write(base / "reports" / "6_final_timing.rpt")
             write(base / "results" / "6_final.odb")
+            write(base / "results" / "6_final.def")
+            write(base / "results" / "6_final.sdc")
+            write(base / "reports" / "5_route_drc.rpt", b"")
+            write(base / "reports" / "6_finish.rpt")
             checksums(base)
 
     def test_complete_synthetic_fixture_only_passes_integrity(self):
@@ -60,6 +64,21 @@ class EvidenceTests(unittest.TestCase):
         (self.root / "gate" / "reports" / "6_final_timing.rpt").unlink()
         checksums(self.root / "gate")
         self.assertTrue(any("no timing" in e for e in check(self.root)))
+
+    def test_missing_final_def_rejected(self):
+        (self.root / "gate" / "results" / "6_final.def").unlink()
+        checksums(self.root / "gate")
+        self.assertTrue(any("final physical artifact 6_final.def" in e for e in check(self.root)))
+
+    def test_missing_drc_report_rejected(self):
+        (self.root / "gold" / "reports" / "5_route_drc.rpt").unlink()
+        checksums(self.root / "gold")
+        self.assertTrue(any("detailed-route DRC report" in e for e in check(self.root)))
+
+    def test_missing_final_report_rejected(self):
+        (self.root / "gate" / "reports" / "6_finish.rpt").unlink()
+        checksums(self.root / "gate")
+        self.assertTrue(any("final timing/area/power reporting stage" in e for e in check(self.root)))
 
     def test_self_referential_manifest_rejected(self):
         sums = self.root / "gold" / "SHA256SUMS.txt"
