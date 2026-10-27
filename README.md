@@ -21,15 +21,15 @@ Evidence repository documenting the OpenROAD Flow Scripts (ORFS) reference flow 
 
 ## 2. Verified Physical Design Metrics (`nangate45/gcd`)
 
-Extracted directly from OpenROAD stage 6 reports (`artifacts/logs/6_report.json` and `artifacts/reports/6_finish.rpt`):
+Historical values attributed to OpenROAD stage 6 reports (`artifacts/logs/6_report.json` and `artifacts/reports/6_finish.rpt`), which are **not currently available as public raw files for independent inspection**:
 
 | Metric Category | Parameter | Value | Notes |
 |---|---|---|---|
 | **Area** | Die Area (reported) | 1,278.42 um² | Verify native DEF boundary; the rounded dimensions shown earlier do not exactly reproduce the figure. |
-| | Core Area | approximately 1,077 um² | Exact geometric bounds require native DEF/ODB inspection. Do not equate sum of instance areas with footprint. |
+| | Geometric Core Area | not independently established | The 1,076.77 um² category sum is **not** geometric core area; native DEF/ODB inspection is required. |
 | | Functional Cell Area (category sum) | 894.29 um² | 674 functional instances; excludes 280 filler and 46 tap instances. |
 | | Physical Support Cell Area | $182.48\ \mu\text{m}^2$ | 280 Fill cells ($170.24\ \mu\text{m}^2$) + 46 Tap cells ($12.24\ \mu\text{m}^2$) |
-| | Reported Utilization | approximately 84% | Earlier 84.19% calculation treated 12.24 um² of tap cells as active logic; verify native tool definition. |
+| | Historical Utilization Claim | 84.19% (unreconciled) | Previous calculation treated 12.24 um² of tap cells as active logic; no validated core geometry or native tool utilization is available. |
 | **Instance Count** | Total Placed Instances | **1,000** | Functional cells (674) + fill/tap cells (326) |
 | | Sequential Logic | 35 | D-type flip-flops ($158.27\ \mu\text{m}^2$) |
 | | Combinational Logic | 377 | Multi-input gates ($512.32\ \mu\text{m}^2$) |
