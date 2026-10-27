@@ -1,0 +1,43 @@
+name: Paired MAC post-route evidence (manual, self-hosted)
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  paired-mac:
+    # Requires an explicitly provisioned Linux runner with ORFS + Nangate45.
+    # No paid cloud runner is provisioned by this workflow.
+    runs-on: [self-hosted, linux, x64, openroad]
+    timeout-minutes: 240
+    env:
+      ORFS_EXPECTED_COMMIT: 64939f3717ad7c694199ba04cb98924b98022868
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Check execution dependencies
+        shell: bash
+        run: |
+          set -euo pipefail
+          : "${ORFS_ROOT:?Set ORFS_ROOT on the self-hosted runner}"
+          test -f "$ORFS_ROOT/flow/Makefile"
+          for tool in git make openroad yosys sha256sum python3; do command -v "$tool"; done
+          test "$(git -C "$ORFS_ROOT" rev-parse HEAD)" = "$ORFS_EXPECTED_COMMIT"
+      - name: Run GOLD and operand-isolated GATE with identical config
+        shell: bash
+        run: |
+          set -euo pipefail
+          bash ppa/run_pair.sh "$ORFS_ROOT" "$RUNNER_TEMP/mac-ppa-evidence"
+      - name: Require actual routed evidence for both variants
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 ppa/check_ci_evidence.py "$RUNNER_TEMP/mac-ppa-evidence"
+      - name: Upload raw evidence even on failure
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: paired-mac-orfs-raw-${{ github.run_id }}
+          path: ${{ runner.temp }}/mac-ppa-evidence/
+          if-no-files-found: error
+          retention-days: 14
