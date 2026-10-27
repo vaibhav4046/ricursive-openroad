@@ -31,10 +31,13 @@ jobs:
         run: |
           set -euo pipefail
           bash ppa/run_pair.sh "$ORFS_ROOT" "$RUNNER_TEMP/mac-ppa-evidence"
-      - name: Require actual routed evidence for both variants
+      - name: Verify provenance and raw evidence integrity (not physical signoff)
         shell: bash
         run: |
           set -euo pipefail
+          # Reject a stale/misidentified experiment even when its file hashes are valid.
+          grep -Fx "mac_repo_sha=$GITHUB_SHA" "$RUNNER_TEMP/mac-ppa-evidence/manifest.txt"
+          grep -Fx "orfs_sha=$ORFS_EXPECTED_COMMIT" "$RUNNER_TEMP/mac-ppa-evidence/manifest.txt"
           python3 ppa/check_ci_evidence.py "$RUNNER_TEMP/mac-ppa-evidence"
       - name: Upload raw evidence even on failure
         if: always()
