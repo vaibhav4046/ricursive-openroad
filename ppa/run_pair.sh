@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Reproducible LOCAL command; intentionally NOT executed by GitHub Actions.
+# Reproducible paired experiment; runs only when explicitly invoked locally or on configured CI.
 set -euo pipefail
 if [[ $# -lt 2 ]]; then
   echo "Usage: bash ppa/run_pair.sh /absolute/OpenROAD-flow-scripts /absolute/output-dir" >&2
@@ -22,6 +22,11 @@ EXPECTED_ORFS_COMMIT="${ORFS_EXPECTED_COMMIT:-64939f3717ad7c694199ba04cb98924b98
 }
 mkdir -p "$OUT_DIR"
 OUT_DIR="$(cd "$OUT_DIR" && pwd)"
+# Never allow a previous experiment's files to satisfy this run's evidence checks.
+if [[ -n "$(find "$OUT_DIR" -mindepth 1 -print -quit)" ]]; then
+  echo "Evidence destination is not empty; choose a fresh output directory: $OUT_DIR" >&2
+  exit 2
+fi
 {
   echo "mac_repo_sha=$(git -C "$REPO_ROOT" rev-parse HEAD)"
   echo "orfs_sha=$EXPECTED_ORFS_COMMIT"
@@ -52,7 +57,7 @@ for variant in gold gate; do
       echo "MISSING $source_dir" >> "$dest/missing_paths.txt"
     fi
   done
-  (cd "$dest" && find . -type f -print0 | sort -z | xargs -0 -r sha256sum) > "$dest/SHA256SUMS.txt"
+  (cd "$dest" && find . -type f ! -name SHA256SUMS.txt -print0 | sort -z | xargs -0 -r sha256sum) > "$dest/SHA256SUMS.txt"
 done
 echo "Both ORFS invocations exited successfully. Review post-route timing/DRC and power caveats before claims."
 echo "Evidence directory: $OUT_DIR"
