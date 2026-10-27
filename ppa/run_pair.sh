@@ -22,6 +22,11 @@ EXPECTED_ORFS_COMMIT="${ORFS_EXPECTED_COMMIT:-64939f3717ad7c694199ba04cb98924b98
 }
 mkdir -p "$OUT_DIR"
 OUT_DIR="$(cd "$OUT_DIR" && pwd)"
+# Never allow a previous experiment's files to satisfy this run's evidence checks.
+if [[ -n "$(find "$OUT_DIR" -mindepth 1 -print -quit)" ]]; then
+  echo "Evidence destination is not empty; choose a fresh output directory: $OUT_DIR" >&2
+  exit 2
+fi
 {
   echo "mac_repo_sha=$(git -C "$REPO_ROOT" rev-parse HEAD)"
   echo "orfs_sha=$EXPECTED_ORFS_COMMIT"
