@@ -1,0 +1,28 @@
+name: Independent BB84 Qiskit Aer validation
+on:
+  push:
+    branches:
+      - validation/comp535-bb84-aer-20261027
+  workflow_dispatch:
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - name: Checkout isolated test branch
+        uses: actions/checkout@v4
+      - name: Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install fixed Qiskit and Aer versions
+        run: python -m pip install "qiskit==2.2.3" "qiskit-aer==0.17.2" "numpy==2.2.6"
+      - name: Run independently implemented BB84 scenarios
+        run: python qa/comp535/independent_aer_check.py
+      - name: Save actual results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: independent-aer-results
+          path: independent_aer_results.json
+          if-no-files-found: warn
