@@ -15,6 +15,9 @@ jobs:
       - uses: actions/checkout@v4
         with:
           persist-credentials: false
+      - name: Unit-test evidence validator (synthetic fixtures only)
+        shell: bash
+        run: python3 -m unittest discover -s ppa -p 'test_check_ci_evidence.py' -v
       - name: Check execution dependencies
         shell: bash
         run: |
