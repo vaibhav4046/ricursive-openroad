@@ -13,3 +13,7 @@ Scope: reviewed the public README, reported metrics, RTL and testbench. This aud
 ## Next evidence gate
 
 Verify area/row bounds against original DEF/ODB; report the original worst setup path and time corner; publish rights-cleared raw logs/layout bundle or a verifiable link; obtain EQY proof for the custom MAC; then run both MAC variants through the same physical flow. No PPA improvements or formal proof claimed here.
+
+## Update: 27 October 2026
+
+Actual hosted EQY proof [run #40419385442](https://github.com/vaibhav4046/ricursive-openroad/actions/runs/40419385442) completed successfully on the default parameterization, proving all three architectural output partitions. See [FORMAL_PROOF.md](FORMAL_PROOF.md). The previous `NOT RUN` statement is historical and is no longer current. The independent GCD raw-archive audit and paired post-route MAC PPA experiment remain outstanding.

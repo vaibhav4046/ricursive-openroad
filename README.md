@@ -1,8 +1,8 @@
 # Ricursive OpenROAD Reference Flow & Arithmetic Verification Evidence
 
-[![Artifact Verification](https://img.shields.io/badge/ORFS%20Artifacts-Verified%20(SHA--256)-blue.svg)](#evidence-manifest--checksums)
+[![Artifact Verification](https://img.shields.io/badge/ORFS%20Artifacts-Raw%20Archive%20Unavailable-yellow.svg)](#evidence-manifest--checksums)
 [![Dynamic Simulation](https://img.shields.io/badge/Simulation-3%2C009%20Vectors%20PASS-brightgreen.svg)](#arithmetic-verification)
-[![Formal Proof](https://img.shields.io/badge/Formal%20(EQY)-NOT%20RUN%20(Tool%20Unavailable)-lightgrey.svg)](#formal-verification-status)
+[![Formal Proof](https://img.shields.io/badge/Formal%20(EQY)-PASS%20(default%20parameters)-brightgreen.svg)](#formal-verification-status)
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](LICENSE)
 
 Evidence repository documenting the OpenROAD Flow Scripts (ORFS) reference flow (`nangate45/gcd`), layout metrics, and custom INT8 signed Multiply-Accumulate (MAC) verification.
@@ -15,21 +15,21 @@ Evidence repository documenting the OpenROAD Flow Scripts (ORFS) reference flow 
 2. **Timing Analysis:** Setup WNS is $-0.163\text{ ns}$ (TNS $-6.995\text{ ns}$, 50 violating endpoints) at an aggressive $0.41\text{ ns}$ target period; Hold WNS is $+0.0896\text{ ns}$ (zero hold violations).
 3. **Area and count audit:** The reported cell taxonomy sums to 674 functional cells plus 326 fill/tap cells, exactly 1,000 instances. Functional area from the named categories is 894.29 square microns; the previously labelled 906.53 square microns includes 12.24 square microns of tap cells. Exact geometric core bounds and utilization definitions require native DEF/report verification.
 4. **Arithmetic Dynamic Verification:** The custom signed-INT8 prefill MAC tile (`rtl/prefill_mac_tile.sv`) passed 3,009 dynamic verification vectors in Icarus Verilog (`iverilog`), covering overflow and modulo wraparound, reset recovery, and 3,000 pseudorandom transaction cycles.
-5. **Formal Verification Honesty:** YosysHQ EQY formal equivalence is explicitly marked **NOT RUN** due to tool unavailability in the execution environment; physical design PPA comparisons on modified MAC RTL are strictly withheld pending formal proof closure.
+5. **Formal Verification:** Hosted YosysHQ EQY formally proved the three externally observable MAC outputs equivalent for the default parameters (DATA_W=8, ACC_W=24), after a 3,009-vector dynamic simulation pass. See [GitHub Actions run #40419385442](https://github.com/vaibhav4046/ricursive-openroad/actions/runs/40419385442), [artifact #12696644253](https://github.com/vaibhav4046/ricursive-openroad/actions/runs/40419385442/artifacts/12696644253) and [proof provenance](docs/FORMAL_PROOF.md). **Custom MAC post-route PPA has NOT RUN.**
 
 ---
 
 ## 2. Verified Physical Design Metrics (`nangate45/gcd`)
 
-Extracted directly from OpenROAD stage 6 reports (`artifacts/logs/6_report.json` and `artifacts/reports/6_finish.rpt`):
+Historical values attributed to OpenROAD stage 6 reports (`artifacts/logs/6_report.json` and `artifacts/reports/6_finish.rpt`), which are **not currently available as public raw files for independent inspection**:
 
 | Metric Category | Parameter | Value | Notes |
 |---|---|---|---|
 | **Area** | Die Area (reported) | 1,278.42 um² | Verify native DEF boundary; the rounded dimensions shown earlier do not exactly reproduce the figure. |
-| | Core Area | approximately 1,077 um² | Exact geometric bounds require native DEF/ODB inspection. Do not equate sum of instance areas with footprint. |
+| | Geometric Core Area | not independently established | The 1,076.77 um² category sum is **not** geometric core area; native DEF/ODB inspection is required. |
 | | Functional Cell Area (category sum) | 894.29 um² | 674 functional instances; excludes 280 filler and 46 tap instances. |
 | | Physical Support Cell Area | $182.48\ \mu\text{m}^2$ | 280 Fill cells ($170.24\ \mu\text{m}^2$) + 46 Tap cells ($12.24\ \mu\text{m}^2$) |
-| | Reported Utilization | approximately 84% | Earlier 84.19% calculation treated 12.24 um² of tap cells as active logic; verify native tool definition. |
+| | Historical Utilization Claim | 84.19% (unreconciled) | Previous calculation treated 12.24 um² of tap cells as active logic; no validated core geometry or native tool utilization is available. |
 | **Instance Count** | Total Placed Instances | **1,000** | Functional cells (674) + fill/tap cells (326) |
 | | Sequential Logic | 35 | D-type flip-flops ($158.27\ \mu\text{m}^2$) |
 | | Combinational Logic | 377 | Multi-input gates ($512.32\ \mu\text{m}^2$) |
@@ -78,16 +78,16 @@ DYNAMIC_EQUIVALENCE_PASS vectors=3009 (formal proof still required)
 
 ## 4. Formal Verification Status
 
-- **Tool:** YosysHQ EQY (`formal/prefill_mac.eqy`)
-- **Status:** **`NOT RUN` / `BLOCKED`**
-- **Reason:** `eqy` is unavailable in the execution environment. Dynamic simulation pass across 3,009 vectors does not constitute formal mathematical closure.
-- **Physical Design Comparison:** As a result, running RTL-to-GDS physical synthesis on the modified MAC tile is withheld to prevent unverified PPA claims. See [`evidence/NOT_RUN.md`](evidence/NOT_RUN.md).
+- **Status:** **PASS for the default RTL parameters only** (DATA_W=8, ACC_W=24), using EQY and the Z3-backed SBY strategy. The three proof partitions are `acc_out`, `overflow_flag` and `valid_out`; no architectural output was left unproven.
+- **Public proof:** [GitHub Actions run #40419385442](https://github.com/vaibhav4046/ricursive-openroad/actions/runs/40419385442), [raw CI artifact #12696644253](https://github.com/vaibhav4046/ricursive-openroad/actions/runs/40419385442/artifacts/12696644253), [provenance and limitations](docs/FORMAL_PROOF.md).
+- **Scope:** This proves the stated output-equivalence relation under the formal model for this parameterization. It does not prove parameter-general equivalence, physical timing closure, switching-power savings, DRC/LVS signoff, or silicon correctness.
+- **Custom MAC physical design comparison:** **NOT RUN**. A reproducible paired ORFS experiment scaffold is provided in [`ppa/`](ppa/README.md). No measured MAC area, timing or power improvements are claimed.
 
 ---
 
 ## 5. Evidence Manifest & Checksums
 
-The evidence archive was reportedly generated locally, but **its raw GDS and logs are not published in this repository**. A public hash list does not independently authenticate unavailable bytes. Original archive:
+The historical GCD reference archive was reportedly generated locally, but **its raw GDS and logs are not published in this repository**. The public MAC proof artifact is a different bundle and does not authenticate the historical GCD archive. A public hash list does not independently authenticate unavailable bytes. Original archive:
 - **Archive Size:** `1,547,429 bytes`
 - **Archive SHA-256:** `AAE30B530E3CF1F35ED90DE4AF1530244B53E08A4F20AC9205C8B89FC017E7D0`
 
@@ -119,4 +119,4 @@ All physical design flows utilize the open-source FreePDK45 / Nangate45 Open Cel
 
 ### Documentation audit disclosure
 
-The original raw build archive was not available to this GitHub documentation audit. The counts and area figures above are internally recalculated from the publicly listed cell categories, not from a new physical-design run. The historical evidence/metrics.json file has not yet been reconciled to these corrections. See [independent review findings](docs/REVIEW_FINDINGS.md).
+The original raw build archive was not available to this GitHub documentation audit. The counts and area figures above are internally recalculated from the publicly listed cell categories, not from a new physical-design run. The machine-readable evidence/metrics.json has been corrected to distinguish recalculated category sums from unverified historical area/utilization/Fmax claims. Original GCD raw bytes are still missing. See [independent review findings](docs/REVIEW_FINDINGS.md).

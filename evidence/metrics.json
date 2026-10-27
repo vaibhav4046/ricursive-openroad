@@ -9,16 +9,20 @@
     "sha256": "AAE30B530E3CF1F35ED90DE4AF1530244B53E08A4F20AC9205C8B89FC017E7D0"
   },
   "area_metrics": {
-    "die_area_um2": 1278.42,
-    "core_area_um2": 1076.77,
-    "standard_cell_area_um2": 906.528,
-    "physical_cell_area_um2": 182.476,
-    "core_utilization_ratio": 0.841897,
-    "core_utilization_percent": 84.19
+    "die_area_um2_reported": 1278.42,
+    "geometric_core_area_um2_verified": null,
+    "functional_cell_area_um2_category_sum": 894.29,
+    "fill_cell_area_um2_category_sum": 170.24,
+    "tap_cell_area_um2_category_sum": 12.24,
+    "support_cell_area_um2_category_sum": 182.48,
+    "all_instance_category_area_sum_um2": 1076.77,
+    "previous_reported_standard_cell_area_um2_unreconciled": 906.528,
+    "previous_reported_core_utilization_percent_unreconciled": 84.19,
+    "note": "Category sums recalculated from published breakdown; not DEF/ODB verified. 906.528 includes 12.24 of tap area. Core geometry and tool utilization remain unverified."
   },
   "instance_breakdown": {
     "total_placed_instances": 1000,
-    "active_standard_cells": 720,
+    "active_standard_cells": 674,
     "physical_support_cells": 326,
     "details": {
       "sequential_cells": 35,
@@ -30,29 +34,33 @@
       "clock_inverters": 2,
       "fill_cells": 280,
       "tap_cells": 46
-    }
+    },
+    "note": "35 sequential + 377 multi-input + 86 inverters + 167 repair buffers + 1 repair inverter + 6 clock buffers + 2 clock inverters = 674 functional. 280 filler + 46 tap = 326 support. Total 1000."
   },
   "timing_metrics": {
     "clock_period_target_ns": 0.41,
     "clock_frequency_target_ghz": 2.42,
-    "fmax_achieved_ghz": 2.41884,
+    "fmax_achieved_ghz": null,
     "setup_wns_ns": -0.163422,
     "setup_tns_ns": -6.99464,
     "setup_violating_endpoints": 50,
     "hold_wns_ns": 0.0896008,
-    "hold_tns_ns": 0.0,
+    "hold_tns_ns": 0,
     "hold_violating_endpoints": 0,
     "setup_skew_ns": 0.00104741,
-    "hold_skew_ns": 0.00104741
+    "hold_skew_ns": 0.00104741,
+    "fmax_reported_ghz_unreconciled": 2.41884,
+    "setup_timing_closed": false,
+    "note": "Negative setup WNS at 0.41ns target means not timing closed; reported Fmax must not be presented as achieved."
   },
   "power_metrics_mw": {
-    "internal_power": 3.30,
-    "switching_power": 2.70,
+    "internal_power": 3.3,
+    "switching_power": 2.7,
     "leakage_power": 0.024,
     "total_power": 6.02
   },
   "power_grid_ir_drop": {
-    "vdd_nominal_v": 1.10,
+    "vdd_nominal_v": 1.1,
     "vdd_worst_voltage_v": 1.08848,
     "vdd_worst_drop_v": 0.01152,
     "vdd_percentage_drop": 1.05,
@@ -67,7 +75,11 @@
   "mac_verification": {
     "dynamic_simulation_vectors": 3009,
     "dynamic_simulation_status": "PASS",
-    "formal_equivalence_status": "NOT RUN (eqy unavailable in execution environment)",
-    "pdr_ppa_comparison_status": "NOT RUN (blocked on formal proof closure)"
-  }
+    "formal_equivalence_status": "PASS for DATA_W=8 ACC_W=24 externally observable outputs only",
+    "pdr_ppa_comparison_status": "NOT RUN; no measured custom MAC PPA",
+    "formal_proof_commit": "66123c6c4ed2e252bde4886b99fd035edf7fa660",
+    "formal_proof_run_id": 40419385442,
+    "formal_proof_artifact_id": 12696644253
+  },
+  "evidence_status": "HISTORICAL_GCD_METRICS_REPORTED_NOT_INDEPENDENTLY_VERIFIED_RAW_ARCHIVE_UNAVAILABLE"
 }

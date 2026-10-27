@@ -34,7 +34,7 @@ The candidate drives multiplier operands to zero when `valid_in=0` or either ope
 
 ## 5. Formal-verification closure gate
 
-Do not claim proof on the strength of a console line saying `PASS`. A valid EQY result requires successful tool exit, `prefill_mac/PASS`, no `prefill_mac/FAIL`, and no unproven/unmatched architectural outputs. Record tool versions, complete logs, partition coverage and assumptions. Run at least the default parameters (DATA_W=8, ACC_W=24); simulation currently exercises DATA_W=8, ACC_W=16. State any proof depth/induction limitations.
+Do not claim proof on the strength of a console line saying `PASS`. A valid EQY result requires successful tool exit, `prefill_mac/PASS`, no `prefill_mac/FAIL`, and no unproven/unmatched architectural outputs. Record tool versions, complete logs, partition coverage and assumptions. Run at least the default parameters (DATA_W=8, ACC_W=24); simulation exercises DATA_W=8, ACC_W=16; [hosted EQY proof](FORMAL_PROOF.md) covers DATA_W=8, ACC_W=24 and three output partitions. Explain parameter coverage and induction/engine limitations.
 
 ## 6. Controlled MAC PPA comparison gate
 
