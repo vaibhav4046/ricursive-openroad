@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Reproducible LOCAL command; intentionally NOT executed by GitHub Actions.
+# Reproducible paired experiment; runs only when explicitly invoked locally or on configured CI.
 set -euo pipefail
 if [[ $# -lt 2 ]]; then
   echo "Usage: bash ppa/run_pair.sh /absolute/OpenROAD-flow-scripts /absolute/output-dir" >&2
@@ -52,7 +52,7 @@ for variant in gold gate; do
       echo "MISSING $source_dir" >> "$dest/missing_paths.txt"
     fi
   done
-  (cd "$dest" && find . -type f -print0 | sort -z | xargs -0 -r sha256sum) > "$dest/SHA256SUMS.txt"
+  (cd "$dest" && find . -type f ! -name SHA256SUMS.txt -print0 | sort -z | xargs -0 -r sha256sum) > "$dest/SHA256SUMS.txt"
 done
 echo "Both ORFS invocations exited successfully. Review post-route timing/DRC and power caveats before claims."
 echo "Evidence directory: $OUT_DIR"
