@@ -1,12 +1,17 @@
-# Formal Equivalence & PPA Comparison: NOT RUN Declaration
+# Formal EQY PASS; custom MAC physical PPA NOT RUN (updated 27 October 2026)
 
-## 1. Formal Equivalence Proof (YosysHQ EQY)
-- **Status:** `NOT RUN` / `BLOCKED`
-- **Tool Required:** YosysHQ EQY (`eqy`) + SMT Solver (`z3`)
-- **Blocker Reason:** The `eqy` binary is not installed in the Windows/WSL2 host environment (`which eqy` exited with code 1).
-- **Integrity Rule:** In accordance with rigorous chip design verification standards, dynamic simulation pass across 3,009 vectors does **NOT** constitute formal mathematical proof. The project explicitly refuses to report a false pass for formal verification.
+This file was originally a historical `NOT RUN` declaration. The formal gate has since been resolved by an actual hosted EQY proof; the filename is retained so existing references do not break.
 
-## 2. Modified MAC Physical Design Flow (RTL-to-GDS PPA)
-- **Status:** `NOT RUN` / `BLOCKED`
-- **Blocker Reason:** Gating criterion: Running physical design comparison on modified RTL without formal equivalence proof closure risks comparing unverified silicon logic.
-- **Integrity Rule:** No area, timing, or power savings are claimed for the operand-isolated candidate over the golden reference without actual physical design measurements.
+## 1. Formal equivalence — PASS (default parameters only)
+
+- Gold: `prefill_mac_tile_gold`; gate: `prefill_mac_tile_gate`.
+- DATA_W=8, ACC_W=24; asynchronous active-low reset; externally observable outputs: `acc_out`, `overflow_flag`, `valid_out`.
+- [CI run #40419385442](https://github.com/vaibhav4046/ricursive-openroad/actions/runs/40419385442): EQY `DONE (PASS, rc=0)`, all 3 output partitions proved, ~19m02s elapsed.
+- [Archived raw proof logs #12696644253](https://github.com/vaibhav4046/ricursive-openroad/actions/runs/40419385442/artifacts/12696644253), [proof limitations](../docs/FORMAL_PROOF.md).
+- The 3,009-vector simulation is separate supporting evidence, not the formal proof. No claim of parameter-general proof, signoff, or power reduction.
+
+## 2. Modified MAC physical design (RTL-to-GDS PPA) — NOT RUN
+
+- No post-route MAC area, setup/hold timing, DRC, switching power or runtime measurements exist yet.
+- The historical Nangate45 GCD reference metrics are **not** MAC measurements.
+- Use the paired [ORFS experiment scaffold](../ppa/README.md) under identical settings. Raw physical runs and activity-controlled power reports are required before claiming improvements.
