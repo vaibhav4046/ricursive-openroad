@@ -11,7 +11,7 @@ Evidence repository documenting the OpenROAD Flow Scripts (ORFS) reference flow 
 
 ## 1. Executive Summary
 
-1. **Physical Design Reference:** Completed the official OpenROAD Flow Scripts RTL-to-GDS reference flow on `nangate45/gcd` under Docker with zero DRC and zero antenna violations.
+1. **Physical Design Reference (historical report, not independently revalidated):** Earlier project records describe an OpenROAD Flow Scripts RTL-to-GDS run on `nangate45/gcd` under Docker, with zero reported DRC and antenna violations. The original GDS/log archive is unavailable for independent byte-level verification.
 2. **Timing Analysis:** Setup WNS is $-0.163\text{ ns}$ (TNS $-6.995\text{ ns}$, 50 violating endpoints) at an aggressive $0.41\text{ ns}$ target period; Hold WNS is $+0.0896\text{ ns}$ (zero hold violations).
 3. **Area and count audit:** The reported cell taxonomy sums to 674 functional cells plus 326 fill/tap cells, exactly 1,000 instances. Functional area from the named categories is 894.29 square microns; the previously labelled 906.53 square microns includes 12.24 square microns of tap cells. Exact geometric core bounds and utilization definitions require native DEF/report verification.
 4. **Arithmetic Dynamic Verification:** The custom signed-INT8 prefill MAC tile (`rtl/prefill_mac_tile.sv`) passed 3,009 dynamic verification vectors in Icarus Verilog (`iverilog`), covering overflow and modulo wraparound, reset recovery, and 3,000 pseudorandom transaction cycles.
@@ -19,7 +19,7 @@ Evidence repository documenting the OpenROAD Flow Scripts (ORFS) reference flow 
 
 ---
 
-## 2. Verified Physical Design Metrics (`nangate45/gcd`)
+## 2. Historically Reported Physical Design Metrics (`nangate45/gcd`; raw archive unavailable)
 
 Historical values attributed to OpenROAD stage 6 reports (`artifacts/logs/6_report.json` and `artifacts/reports/6_finish.rpt`), which are **not currently available as public raw files for independent inspection**:
 
@@ -42,8 +42,8 @@ Historical values attributed to OpenROAD stage 6 reports (`artifacts/logs/6_repo
 | **Power & IR Drop** | Total Power | $6.02\text{ mW}$ | Internal: $3.30\text{ mW}$, Switching: $2.70\text{ mW}$, Leakage: $0.024\text{ mW}$ |
 | | VDD Max IR Drop | $1.05\%$ ($1.15\times 10^{-2}\text{ V}$) | Flow estimate, not foundry signoff |
 | | VSS Max IR Drop | $0.62\%$ ($6.83\times 10^{-3}\text{ V}$) | Flow estimate, not foundry signoff |
-| **Integrity** | Detailed Route DRCs | **0 violations** | Verified via `5_route_drc.rpt` (0 bytes) |
-| | Antenna Violations | **0 violations** | Verified via `drt_antennas.log` (0 bytes) |
+| **Integrity** | Detailed Route DRCs | **0 reported violations** | Historical claim attributed to `5_route_drc.rpt` (0 bytes); raw report unavailable for independent inspection. |
+| | Antenna Violations | **0 reported violations** | Historical claim attributed to `drt_antennas.log` (0 bytes); raw log unavailable for independent inspection. |
 
 Detailed analyses: [`docs/AREA_TERMINOLOGY.md`](docs/AREA_TERMINOLOGY.md) and [`docs/TIMING_ANALYSIS.md`](docs/TIMING_ANALYSIS.md).
 
@@ -91,7 +91,7 @@ The historical GCD reference archive was reportedly generated locally, but **its
 - **Archive Size:** `1,547,429 bytes`
 - **Archive SHA-256:** `AAE30B530E3CF1F35ED90DE4AF1530244B53E08A4F20AC9205C8B89FC017E7D0`
 
-Verified checksums of constituent deliverables ([`evidence/validation.json`](evidence/validation.json)):
+Published constituent-file checksum claims ([`evidence/validation.json`](evidence/validation.json)); **not independently verified against original bytes**:
 
 | Artifact | Size | SHA-256 Digest |
 |---|---|---|
