@@ -66,7 +66,7 @@ def summary(mode, e, p, seed, blocks=35, n=256):
         mask=v>0
         if mask.sum()>1 and 0<rate<1:
             ds.append(float((((c[mask]-v[mask]*rate)**2)/(v[mask]*rate*(1-rate))).sum()/(mask.sum()-1)))
-    return dict(mode=mode,e=e,p=p,n=n,blocks=blocks,bits=bits,Q=k/bits,QZ=kz/nz,QX=kx/nx,D=float(np.mean(ds)))
+    return dict(mode=mode,e=e,p=p,n=n,blocks=blocks,bits=bits,Q=k/bits,QZ=kz/nz,QX=kx/nx,D=float(np.mean(ds)) if ds else 0.0)
 
 def main():
     import qiskit,qiskit_aer
