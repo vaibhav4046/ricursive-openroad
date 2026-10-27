@@ -3,10 +3,12 @@
 [gold]
 read_verilog -sv rtl/prefill_mac_tile.sv
 prep -top prefill_mac_tile_gold
+rename -top prefill_mac_tile
 
 [gate]
 read_verilog -sv rtl/prefill_mac_tile.sv
 prep -top prefill_mac_tile_gate
+rename -top prefill_mac_tile
 
 [collect *]
 

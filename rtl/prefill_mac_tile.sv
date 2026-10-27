@@ -42,10 +42,10 @@ module prefill_mac_tile_gate #(
   wire drive_multiplier = valid_in && !zero_product;
   wire signed [DATA_W-1:0] gated_act = drive_multiplier ? act_in : {DATA_W{1'b0}};
   wire signed [DATA_W-1:0] gated_wgt = drive_multiplier ? wgt_in : {DATA_W{1'b0}};
-  wire signed [2*DATA_W-1:0] product = gated_act * gated_wgt;
-  wire signed [ACC_W:0] prod_ext = {{(ACC_W+1-2*DATA_W){product[2*DATA_W-1]}}, product};
+  wire signed [2*DATA_W-1:0] isolated_product = gated_act * gated_wgt;
+  wire signed [ACC_W:0] isolated_prod_ext = {{(ACC_W+1-2*DATA_W){isolated_product[2*DATA_W-1]}}, isolated_product};
   wire signed [ACC_W:0] base = clear_acc ? {(ACC_W+1){1'b0}} : {acc_out[ACC_W-1],acc_out};
-  wire signed [ACC_W:0] next_value = base + prod_ext;
+  wire signed [ACC_W:0] isolated_next_value = base + isolated_prod_ext;
   always @(posedge clk or negedge rst_n) begin
     if (!rst_n) begin
       acc_out <= 0;
@@ -54,8 +54,8 @@ module prefill_mac_tile_gate #(
     end else begin
       valid_out <= valid_in;
       if (valid_in) begin
-        acc_out <= next_value[ACC_W-1:0];
-        overflow_flag <= next_value[ACC_W] ^ next_value[ACC_W-1];
+        acc_out <= isolated_next_value[ACC_W-1:0];
+        overflow_flag <= isolated_next_value[ACC_W] ^ isolated_next_value[ACC_W-1];
       end
     end
   end

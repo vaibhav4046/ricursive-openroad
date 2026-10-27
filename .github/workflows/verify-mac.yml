@@ -1,0 +1,71 @@
+name: Verify INT8 MAC (simulation + EQY)
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'rtl/**'
+      - 'tests/**'
+      - 'formal/**'
+      - '.github/workflows/verify-mac.yml'
+  pull_request:
+    paths:
+      - 'rtl/**'
+      - 'tests/**'
+      - 'formal/**'
+      - '.github/workflows/verify-mac.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  simulation-and-formal:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Checkout exact revision
+        uses: actions/checkout@v5
+
+      - name: Install maintained open source EDA suite
+        uses: YosysHQ/setup-oss-cad-suite@v4
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Tool and revision provenance
+        run: |
+          mkdir -p ci-artifacts
+          git rev-parse HEAD | tee ci-artifacts/commit.txt
+          yosys -V | tee ci-artifacts/yosys-version.txt
+          eqy --version 2>&1 | tee ci-artifacts/eqy-version.txt
+          sby --version 2>&1 | tee ci-artifacts/sby-version.txt
+          command -v z3 | tee ci-artifacts/solver-location.txt
+          command -v iverilog
+
+      - name: Test signed-INT8 MAC against reference and arithmetic scoreboard
+        shell: bash
+        run: |
+          set -euo pipefail
+          iverilog -g2012 -s tb_prefill_mac_equiv -o ci-artifacts/mac_sim rtl/prefill_mac_tile.sv tests/tb_prefill_mac_equiv.sv
+          vvp ci-artifacts/mac_sim 2>&1 | tee ci-artifacts/mac-sim-console.log
+          grep -q 'DYNAMIC_EQUIVALENCE_PASS vectors=3009' ci-artifacts/mac-sim-console.log
+
+      - name: Run actual EQY formal equivalence
+        shell: bash
+        run: |
+          set -euo pipefail
+          eqy -f formal/prefill_mac.eqy 2>&1 | tee ci-artifacts/eqy-console.log
+          test -f prefill_mac/PASS
+          test ! -f prefill_mac/FAIL
+          grep -q 'Successfully proved designs equivalent' ci-artifacts/eqy-console.log || grep -q 'PASS' prefill_mac/status
+
+      - name: Preserve logs, including failed proof details
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: mac-verification-evidence
+          path: |
+            ci-artifacts/
+            prefill_mac/
+            formal/prefill_mac/
+          if-no-files-found: warn
+          retention-days: 14
