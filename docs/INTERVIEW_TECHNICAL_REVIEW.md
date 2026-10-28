@@ -4,9 +4,9 @@
 
 ## 1. Explain the physical flow in 60 seconds
 
-RTL elaboration -> logic synthesis -> floorplan/power grid -> placement and optimization -> clock-tree synthesis -> global/detailed routing -> parasitic extraction -> static timing and physical checks -> GDS generation. A completed reference RTL-to-GDS flow is **not** independent foundry signoff, LVS closure, or tapeout. For this repository, the **Nangate45 GCD** example validates execution of the reference flow; it is **not** the custom MAC physical implementation.
+RTL elaboration -> logic synthesis -> floorplan/power grid -> placement and optimization -> clock-tree synthesis -> global/detailed routing -> parasitic extraction -> static timing and physical checks -> GDS generation. A completed reference RTL-to-GDS flow is **not** independent foundry signoff, LVS closure, or tapeout. This repository records a **historically reported** Nangate45 GCD reference run, but its original `Ricursive_GCD_Real_Artifacts.tar.gz` GDS/log archive is unavailable for independent validation. Do **not** claim that the public repository independently proves this physical flow completed; the GCD report is also **not** the custom MAC physical implementation.
 
-**Reviewer drill:** point to the exact commit, immutable Docker image digest, SDC, stage-5 route log, final GDS/DEF and final timing report. The raw local archive is not yet public, so the public checksum alone does not verify its contents.
+**Reviewer drill:** distinguish the published historical commit/image/checksum claims from raw files actually inspected. Request the original archive, verify its SHA-256 and sharing permission, and only then inspect the SDC, stage-5 route log, final GDS/DEF and final timing report. Until then, do not claim those reports were independently reproduced or checked.
 
 ## 2. Setup and hold timing: what do the signs mean?
 
