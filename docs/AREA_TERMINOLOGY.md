@@ -1,6 +1,6 @@
 # Area & Cell-Count Terminology Corrections
 
-This document provides the exact definition and correction of layout geometry and instance counts from the OpenROAD `nangate45/gcd` reference run.
+This document audits arithmetic and terminology in **historically reported** OpenROAD `nangate45/gcd` instance counts and areas. The original GDS/DEF/ODB/log archive is unavailable, so these are consistency checks on published categories, **not** independent physical-design measurements.
 
 ---
 
@@ -8,19 +8,19 @@ This document provides the exact definition and correction of layout geometry an
 
 In standard physical design (ISPD / OpenROAD) terminology:
 
-| Parameter | Measured Value | Definition & Correction |
+| Parameter | Reported or recalculated value | Definition & Correction |
 |---|---|---|
 | **Die Area** | 1,278.42 um² (reported) | Exact DEF boundary must be checked; rounded dimensions in the prior draft do not produce the quoted area exactly. |
-| **Core Footprint** | approximately 1,077 um² | Exact DEF/ODB row/core boundaries are not in this repository; do not infer an exact footprint from the total instance-area sum. |
+| **Core Footprint** | Not independently established | The reported category-area sum is approximately 1,076.77 um², but this is **not** core geometry. Exact DEF/ODB row/core boundaries are unavailable. |
 | **Functional Cell Area** | 894.29 um² | Sum of logic, sequential, clock and repair-cell category areas. Earlier 906.53 um² included 12.24 um² of tap cells. |
 | **Physical Cell Area** | $182.48\ \mu\text{m}^2$ | Area occupied by physical non-logic cells (280 fill cells: $170.24\ \mu\text{m}^2$ + 46 tap cells: $12.24\ \mu\text{m}^2$). |
-| **Reported Utilization** | approximately 84% | Reported by the flow; the exact numerator/denominator and tap treatment require raw native report reconciliation. |
+| **Reported Utilization** | approximately 84% (historical claim) | The exact numerator/denominator and tap treatment require raw native report reconciliation. |
 
 ---
 
 ## 2. Cell Count Disaggregation
 
-The OpenROAD database records **1,000 total placed instances**. This count comprises:
+The published historical cell-category counts sum to **1,000 reported instances**; this has not been checked against the unavailable OpenROAD database. The breakdown comprises:
 
 1. **Functional Standard Cells (674 cells, 894.29 square microns from published categories):**
    - **Sequential Logic:** 35 cells ($158.27\ \mu\text{m}^2$) — D-type flip-flops.
